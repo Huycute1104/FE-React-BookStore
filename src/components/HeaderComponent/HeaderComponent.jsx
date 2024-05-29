@@ -1,13 +1,13 @@
 import { Col, Flex } from 'antd';
 import React from 'react';
-import { WrapperHeader, WrapperHeaderAccount, WrapperHeaderTextCart, WrapperHeaderTextSpan, WrapperTextHeader } from './style';
+import { WrapperHeader, WrapperHeaderAccount, WrapperHeaderTextSpan, WrapperTextHeader } from './style';
 import Search from 'antd/es/input/Search';
 import {
   UserOutlined,
   CaretDownOutlined,
   ShoppingCartOutlined
 } from '@ant-design/icons';
-import getFontSizes from 'antd/es/theme/themes/shared/genFontSizes';
+
 
 function HeaderComponent() {
   return (
@@ -17,9 +17,9 @@ function HeaderComponent() {
           <WrapperTextHeader>BookStore</WrapperTextHeader>
         </Col>
         <Col span={12}>
-          <Search placeholder="input search text" enterButton />
+          <Search placeholder="Tìm kiếm " enterButton />
         </Col>
-        <Col span={6} style={{display:'flex', gap:'20px'}}>
+        <Col span={6} style={{display:'flex', gap:'20px',alignItems:'center'}}>
           <WrapperHeaderAccount>
             <UserOutlined style={{ fontSize: '30px' }} />
             <div>
