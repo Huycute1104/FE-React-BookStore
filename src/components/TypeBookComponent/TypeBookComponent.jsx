@@ -1,9 +1,9 @@
 import React from 'react'
 
-const TypeBookComponent = () => {
+const TypeBookComponent = ({ name }) => {
   return (
     <div>
-      TypeProduct
+      {name}
     </div>
   )
 }
