@@ -7,8 +7,8 @@ import banner1 from '../../assets/images/banner1.jpg';
 import banner2 from '../../assets/images/banner2.jpg';
 import banner3 from '../../assets/images/banner3.jpg';
 import banner4 from '../../assets/images/banner4.jpg';
-import BookComponent from '../../components/CardComponent/CardComponent';
 import CardComponent from '../../components/CardComponent/CardComponent';
+import NavbarComponent from '../../components/NavbarComponent/NavbarComponent';
 
 
 const HomePage = () => {
@@ -26,6 +26,7 @@ const HomePage = () => {
       <div>
         <CardComponent/>
       </div>
+      <NavbarComponent/>
     </div>
   )
 }
