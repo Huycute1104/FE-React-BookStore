@@ -11,7 +11,8 @@ flex-wrap:wrap;
 
 export const WrapperNavbar = styled(Col)`
 background:#fff; 
-marginRight:10px;
+margin-right:10px;
 padding:10px;
 borderRadius:6px;
+height: fit-content;
 `
