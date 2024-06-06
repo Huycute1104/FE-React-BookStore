@@ -16,3 +16,11 @@ export const WapperButtonMore = styled(ButtonComponent)`
     background: rbg(13,92,182);
 }
 `
+
+export const WapperProducts = styled.div`
+display: flex;
+justify-content:center;
+gap:15px;
+margin-top:20px;
+flex-wrap:wrap;
+`
