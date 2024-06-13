@@ -12,10 +12,10 @@ const TypeProductPage = () => {
     return (
         <div style={{ padding: '0 120px', background: '#efefef' }}>
             <Row style={{ flexWrap: 'nowrap', paddingTop: '10px' }}>
-                <WrapperNavbar span={4}>
+                <WrapperNavbar span={6}>
                     <NavbarComponent />
                 </WrapperNavbar>
-                <Col span={20}>
+                <Col span={18}>
                     <WapperProducts>
                         <CardComponent />
                         <CardComponent />
