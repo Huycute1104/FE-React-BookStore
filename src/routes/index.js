@@ -26,8 +26,7 @@ export const routes =[
     },
     {
         path:'/signin',
-        page:SignInPage,
-        isShowHeader:true
+        page:SignInPage
     },
     {
         path:'/productdetail',

@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 export const WrapperHeader = styled(Row)`
   padding: 10px 120px;
-  background-color: rgb(26, 148, 255);
+  background-color: rgb(125, 42, 232);
   align-center:center;
   gap:70px;
   flex-wrap: nowrap;

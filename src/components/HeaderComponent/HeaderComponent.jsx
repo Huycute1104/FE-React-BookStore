@@ -17,7 +17,7 @@ function HeaderComponent() {
           <WrapperTextHeader>BookStore</WrapperTextHeader>
         </Col>
         <Col span={12}>
-          <Search placeholder="Tìm kiếm " enterButton />
+          <Search placeholder="Tìm kiếm "  />
         </Col>
         <Col span={6} style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
           <WrapperHeaderAccount>
