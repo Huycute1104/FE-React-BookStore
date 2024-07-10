@@ -1,3 +1,4 @@
+import AdminPage from "../page/AdminPage/AdminPage";
 import HomePage from "../page/HomePage/HomePage";
 import NotFoundPage from "../page/NotFoundPage/NotFoundPage";
 import OrdersPage from "../page/OrdersPage/OrdersPage";
@@ -46,5 +47,9 @@ export const routes =[
     {
         path:'*',
         page:NotFoundPage
+    },
+    {
+        path:'/admin',
+        page:AdminPage
     }
 ]

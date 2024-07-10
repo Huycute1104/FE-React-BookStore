@@ -1,13 +1,54 @@
+/* eslint-disable no-undef */
 import React, { useState } from 'react';
 import frontImg from '../../assets/images/frontImg.jpg';
 import backImg from '../../assets/images/backImg.jpg';
+import { useDispatch } from 'react-redux';
+import { postLogin } from '../../api/authService';
+import { useNavigate } from 'react-router-dom';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { loginSuccess } from '../../redux/actions/authActions';
 
 const SignInPage = () => {
   const [isFlipped, setIsFlipped] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogin = async (values) => {
+    try {
+      const loginResponse = await postLogin(values);
+      const loginData = loginResponse.data;
+      console.log(loginData);
+      console.log(values);
+      localStorage.setItem('token', loginData.token);
+      dispatch(loginSuccess(loginData)) 
+        if (loginData.user.roleId === 2) {
+          navigate('/');
+        } else {
+          navigate('/admin');
+        }
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  };
 
   const handleFlip = () => {
     setIsFlipped(!isFlipped);
   };
+  const initialValues = {
+    email: "",
+    password: "",
+  };
+  const loginValidationSchema = Yup.object().shape({
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    password: Yup.string().required('Password is required')
+  });
+
+  const signupValidationSchema = Yup.object().shape({
+    name: Yup.string().required('Name is required'),
+    email: Yup.string().email('Invalid email address').required('Email is required'),
+    password: Yup.string().required('Password is required')
+  });
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#dedee8', padding: '30px' }}>
@@ -36,55 +77,72 @@ const SignInPage = () => {
                 Login
                 <div style={{ content: '', position: 'absolute', left: 0, bottom: 0, height: '3px', width: '25px', background: '#7d2ae8' }}></div>
               </div>
-              <form action="#">
-                <div className="input-boxes" style={{ marginTop: '30px' }}>
-                  <div className="input-box" style={{ display: 'flex', alignItems: 'center', height: '50px', width: '100%', margin: '10px 0', position: 'relative' }}>
-                    <i className="fas fa-envelope" style={{ position: 'absolute', color: '#7d2ae8', fontSize: '17px' }}></i>
-                    <input type="text" placeholder="Enter your email" required style={{ height: '100%', width: '100%', outline: 'none', border: 'none', padding: '0 30px', fontSize: '16px', fontWeight: 500, borderBottom: '2px solid rgba(0,0,0,0.2)', transition: 'all 0.3s ease' }} />
+              <Formik
+                initialValues={initialValues}
+                validationSchema={loginValidationSchema}
+                onSubmit={handleLogin}
+              >
+                <Form>
+                  <div className="input-boxes" style={{ marginTop: '30px' }}>
+                    <div className="input-box" style={{ display: 'flex', alignItems: 'center', height: '50px', width: '100%', margin: '10px 0', position: 'relative' }}>
+                      <i className="fas fa-envelope" style={{ position: 'absolute', color: '#7d2ae8', fontSize: '17px' }}></i>
+                      <Field name="email" type="text" placeholder="Enter your email" style={{ height: '100%', width: '100%', outline: 'none', border: 'none', padding: '0 30px', fontSize: '16px', fontWeight: 500, borderBottom: '2px solid rgba(0,0,0,0.2)', transition: 'all 0.3s ease' }} />
+                      <ErrorMessage name="email" component="div" style={{ color: 'red', position: 'absolute', bottom: '-20px', left: '30px' }} />
+                    </div>
+                    <div className="input-box" style={{ display: 'flex', alignItems: 'center', height: '50px', width: '100%', margin: '10px 0', position: 'relative' }}>
+                      <i className="fas fa-lock" style={{ position: 'absolute', color: '#7d2ae8', fontSize: '17px' }}></i>
+                      <Field name="password" type="password" placeholder="Enter your password" style={{ height: '100%', width: '100%', outline: 'none', border: 'none', padding: '0 30px', fontSize: '16px', fontWeight: 500, borderBottom: '2px solid rgba(0,0,0,0.2)', transition: 'all 0.3s ease' }} />
+                      <ErrorMessage name="password" component="div" style={{ color: 'red', position: 'absolute', bottom: '-20px', left: '30px' }} />
+                    </div>
+                    <div className="text" style={{ fontSize: '14px', fontWeight: 500, color: '#333' }}><a href="#" style={{ textDecoration: 'none' }}>Forgot password?</a></div>
+                    <div className="button input-box" style={{ marginTop: '40px' }}>
+                      <button type="submit" style={{ color: '#fff', background: '#7d2ae8', borderRadius: '6px', padding: '10px 0', width: '100%', cursor: 'pointer', transition: 'all 0.4s ease' }}>Submit</button>
+                    </div>
+                    <div className="text sign-up-text" style={{ textAlign: 'center', marginTop: '25px' }}>Don't have an account? <label htmlFor="flip" style={{ color: '#5b13b9', cursor: 'pointer' }}>Signup now</label></div>
                   </div>
-                  <div className="input-box" style={{ display: 'flex', alignItems: 'center', height: '50px', width: '100%', margin: '10px 0', position: 'relative' }}>
-                    <i className="fas fa-lock" style={{ position: 'absolute', color: '#7d2ae8', fontSize: '17px' }}></i>
-                    <input type="password" placeholder="Enter your password" required style={{ height: '100%', width: '100%', outline: 'none', border: 'none', padding: '0 30px', fontSize: '16px', fontWeight: 500, borderBottom: '2px solid rgba(0,0,0,0.2)', transition: 'all 0.3s ease' }} />
-                  </div>
-                  <div className="text" style={{ fontSize: '14px', fontWeight: 500, color: '#333' }}><a href="#" style={{ textDecoration: 'none' }}>Forgot password?</a></div>
-                  <div className="button input-box" style={{ marginTop: '40px' }}>
-                    <input type="submit" value="Submit" style={{ color: '#fff', background: '#7d2ae8', borderRadius: '6px', padding: '10px 0', width: '100%', cursor: 'pointer', transition: 'all 0.4s ease' }} />
-                  </div>
-                  <div className="text sign-up-text" style={{ textAlign: 'center', marginTop: '25px' }}>Don't have an account? <label htmlFor="flip" style={{ color: '#5b13b9', cursor: 'pointer' }}>Signup now</label></div>
-                </div>
-              </form>
+                </Form>
+              </Formik>
             </div>
             <div className="signup-form" style={{ width: 'calc(50% - 25px)' }}>
               <div className="title" style={{ position: 'relative', fontSize: '24px', fontWeight: 500, color: '#333' }}>
                 Signup
                 <div style={{ content: '', position: 'absolute', left: 0, bottom: 0, height: '3px', width: '20px', background: '#7d2ae8' }}></div>
               </div>
-              <form action="#">
-                <div className="input-boxes" style={{ marginTop: '30px' }}>
-                  <div className="input-box" style={{ display: 'flex', alignItems: 'center', height: '50px', width: '100%', margin: '10px 0', position: 'relative' }}>
-                    <i className="fas fa-user" style={{ position: 'absolute', color: '#7d2ae8', fontSize: '17px' }}></i>
-                    <input type="text" placeholder="Enter your name" required style={{ height: '100%', width: '100%', outline: 'none', border: 'none', padding: '0 30px', fontSize: '16px', fontWeight: 500, borderBottom: '2px solid rgba(0,0,0,0.2)', transition: 'all 0.3s ease' }} />
+              <Formik
+                initialValues={{ name: '', email: '', password: '' }}
+                validationSchema={signupValidationSchema}
+                onSubmit={(values) => console.log(values)}
+              >
+                <Form>
+                  <div className="input-boxes" style={{ marginTop: '30px' }}>
+                    <div className="input-box" style={{ display: 'flex', alignItems: 'center', height: '50px', width: '100%', margin: '10px 0', position: 'relative' }}>
+                      <i className="fas fa-user" style={{ position: 'absolute', color: '#7d2ae8', fontSize: '17px' }}></i>
+                      <Field name="name" type="text" placeholder="Enter your name" style={{ height: '100%', width: '100%', outline: 'none', border: 'none', padding: '0 30px', fontSize: '16px', fontWeight: 500, borderBottom: '2px solid rgba(0,0,0,0.2)', transition: 'all 0.3s ease' }} />
+                      <ErrorMessage name="name" component="div" style={{ color: 'red', position: 'absolute', bottom: '-20px', left: '30px' }} />
+                    </div>
+                    <div className="input-box" style={{ display: 'flex', alignItems: 'center', height: '50px', width: '100%', margin: '10px 0', position: 'relative' }}>
+                      <i className="fas fa-envelope" style={{ position: 'absolute', color: '#7d2ae8', fontSize: '17px' }}></i>
+                      <Field name="email" type="text" placeholder="Enter your email" style={{ height: '100%', width: '100%', outline: 'none', border: 'none', padding: '0 30px', fontSize: '16px', fontWeight: 500, borderBottom: '2px solid rgba(0,0,0,0.2)', transition: 'all 0.3s ease' }} />
+                      <ErrorMessage name="email" component="div" style={{ color: 'red', position: 'absolute', bottom: '-20px', left: '30px' }} />
+                    </div>
+                    <div className="input-box" style={{ display: 'flex', alignItems: 'center', height: '50px', width: '100%', margin: '10px 0', position: 'relative' }}>
+                      <i className="fas fa-lock" style={{ position: 'absolute', color: '#7d2ae8', fontSize: '17px' }}></i>
+                      <Field name="password" type="password" placeholder="Enter your password" style={{ height: '100%', width: '100%', outline: 'none', border: 'none', padding: '0 30px', fontSize: '16px', fontWeight: 500, borderBottom: '2px solid rgba(0,0,0,0.2)', transition: 'all 0.3s ease' }} />
+                      <ErrorMessage name="password" component="div" style={{ color: 'red', position: 'absolute', bottom: '-20px', left: '30px' }} />
+                    </div>
+                    <div className="button input-box" style={{ marginTop: '40px' }}>
+                      <button type="submit" style={{ color: '#fff', background: '#7d2ae8', borderRadius: '6px', padding: '10px 0', width: '100%', cursor: 'pointer', transition: 'all 0.4s ease' }}>Submit</button>
+                    </div>
+                    <div className="text sign-up-text" style={{ textAlign: 'center', marginTop: '25px' }}>Already have an account? <label htmlFor="flip" style={{ color: '#5b13b9', cursor: 'pointer' }}>Login now</label></div>
                   </div>
-                  <div className="input-box" style={{ display: 'flex', alignItems: 'center', height: '50px', width: '100%', margin: '10px 0', position: 'relative' }}>
-                    <i className="fas fa-envelope" style={{ position: 'absolute', color: '#7d2ae8', fontSize: '17px' }}></i>
-                    <input type="text" placeholder="Enter your email" required style={{ height: '100%', width: '100%', outline: 'none', border: 'none', padding: '0 30px', fontSize: '16px', fontWeight: 500, borderBottom: '2px solid rgba(0,0,0,0.2)', transition: 'all 0.3s ease' }} />
-                  </div>
-                  <div className="input-box" style={{ display: 'flex', alignItems: 'center', height: '50px', width: '100%', margin: '10px 0', position: 'relative' }}>
-                    <i className="fas fa-lock" style={{ position: 'absolute', color: '#7d2ae8', fontSize: '17px' }}></i>
-                    <input type="password" placeholder="Enter your password" required style={{ height: '100%', width: '100%', outline: 'none', border: 'none', padding: '0 30px', fontSize: '16px', fontWeight: 500, borderBottom: '2px solid rgba(0,0,0,0.2)', transition: 'all 0.3s ease' }} />
-                  </div>
-                  <div className="button input-box" style={{ marginTop: '40px' }}>
-                    <input type="submit" value="Submit" style={{ color: '#fff', background: '#7d2ae8', borderRadius: '6px', padding: '10px 0', width: '100%', cursor: 'pointer', transition: 'all 0.4s ease' }} />
-                  </div>
-                  <div className="text sign-up-text" style={{ textAlign: 'center', marginTop: '25px' }}>Already have an account? <label htmlFor="flip" style={{ color: '#5b13b9', cursor: 'pointer' }}>Login now</label></div>
-                </div>
-              </form>
+                </Form>
+              </Formik>
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default SignInPage;
