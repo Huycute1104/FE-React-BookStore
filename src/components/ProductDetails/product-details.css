@@ -1,0 +1,94 @@
+.product-page {
+    padding-top: 100px;
+}
+
+.product-page .main-image img {
+    width: 80%;
+    height: auto;
+    object-fit: contain;
+}
+
+.product-page .thumbnail-images {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.product-page .thumbnail-images img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border 0.3s ease;
+}
+
+.product-page .thumbnail-images img:hover {
+    border: 2px solid #7D2AE8;
+}
+
+.product-page .rate {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    gap: 40px;
+}
+
+.product-page .rate span {
+    font-size: 15px;
+}
+
+.product-page .rate span i {
+    font-size: 15px;
+    color: #ffcd4e;
+}
+
+.product-page .rate .stars i {
+    font-size: 12px;
+    color: #ffcd4e;
+    margin: 5px 5px 5px 0;
+}
+
+.product-page .info {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+.product-page .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.product-page .info .price {
+    font-size: 25px;
+}
+
+.product-page .info span {
+    font-size: 20px;
+}
+
+.product-page p {
+    font-size: 14px;
+    margin: 20px 0;
+}
+
+.product-page .qty-input {
+    width: 80px;
+    height: 20px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 20px 0;
+    color: black;
+    font-size: 15px;
+}
+
+.product-page button.add {
+    padding: 10px 15px;
+    background-color: #0f3460;
+    color: white;
+    font-size: 17px;
+    border-radius: 7px;
+}
