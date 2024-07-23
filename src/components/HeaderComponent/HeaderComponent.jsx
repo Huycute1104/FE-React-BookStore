@@ -15,8 +15,7 @@ function HeaderComponent() {
   const { cartList } = useSelector((state) => state.cart);
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(null);
-  const accessToken = useSelector((state) => state.auth.token);
-  console.log(accessToken)
+  console.log(userInfo)
   useEffect(() => {
     // boxchat();
     const userInfo = getTokenInfo();
@@ -67,7 +66,7 @@ function HeaderComponent() {
           <WrapperHeaderAccount>
             <UserOutlined style={{ fontSize: '30px' }} />
             <div onClick={handleNavigateLogin} style={{ cursor: 'pointer' }}>
-              {accessToken ? (<WrapperHeaderTextSpan>{userInfo.email}</WrapperHeaderTextSpan>) : (<WrapperHeaderTextSpan>Đăng nhập</WrapperHeaderTextSpan>)}
+              { userInfo ? (<WrapperHeaderTextSpan>{userInfo.email}</WrapperHeaderTextSpan>) : (<WrapperHeaderTextSpan>Đăng nhập</WrapperHeaderTextSpan>)}
             </div>
           </WrapperHeaderAccount>
           <div>
