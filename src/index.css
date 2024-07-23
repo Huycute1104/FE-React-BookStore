@@ -1,18 +1,30 @@
 @import "slick-carousel/slick/slick.css";
 @import "slick-carousel/slick/slick-theme.css";
 
+
+html,
 body {
+  height: 100%;
   margin: 0;
-  box-sizing: border-box;
-  padding: 0;
-
 }
 
-html{
-  font-size: 62.5%;
-  
+body {
+  display: flex;
+  flex-direction: column;
 }
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
