@@ -1,8 +1,15 @@
 import React from 'react';
 import { Box, Typography, Button, Container } from '@mui/material';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const Fail = () => {
+  const navigate = useNavigate();
+
+  const handleGoHome = () => {
+    navigate('/my-orders'); 
+  };
+
   return (
     <Container
       component={motion.div}
@@ -24,7 +31,7 @@ const Fail = () => {
         <Typography variant="body1" gutterBottom sx={{ marginBottom: 2 }}>
           Unfortunately, your transaction could not be completed. Please try again later.
         </Typography>
-        <Button variant="contained" color="secondary" size="large">
+        <Button variant="contained" color="secondary" size="large" onClick={handleGoHome}>
           Retry
         </Button>
       </Box>

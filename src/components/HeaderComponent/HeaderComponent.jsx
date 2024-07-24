@@ -41,8 +41,9 @@ function HeaderComponent() {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    
     setUserInfo(null);
-    navigate('/');
+    navigate('/signin');
   };
 
   useEffect(() => {
@@ -62,7 +63,7 @@ function HeaderComponent() {
   const menu = (
     <Menu>
       <Menu.Item key="1">
-        <Link to="/myorders">My Orders</Link>
+        <Link to="/my-orders">My Orders</Link>
       </Menu.Item>
       <Menu.Item key="2" onClick={handleLogout}>
         Logout

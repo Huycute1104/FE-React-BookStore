@@ -1,8 +1,15 @@
 import React from 'react';
 import { Box, Typography, Button, Container } from '@mui/material';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const Success = () => {
+  const navigate = useNavigate();
+
+  const handleGoHome = () => {
+    navigate('/my-orders'); 
+  };
+
   return (
     <Container
       component={motion.div}
@@ -24,7 +31,7 @@ const Success = () => {
         <Typography variant="body1" gutterBottom sx={{ marginBottom: 2 }}>
           Thank you for your purchase. Your transaction has been completed successfully.
         </Typography>
-        <Button variant="contained" color="primary" size="large">
+        <Button variant="contained" color="primary" size="large" onClick={handleGoHome}>
           Go to Home
         </Button>
       </Box>

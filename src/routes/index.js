@@ -8,6 +8,7 @@ import SignUpPage from "../page/SignUpPage/SignUpPage";
 import CartPage from "../page/CartPage/Cart.jsx";
 import Success from "../page/CheckOut/Success.jsx";
 import Fail from "../page/CheckOut/Fail.jsx";
+import MyOrder from "../page/MyOrderPage/MyOrder.js";
 
 export const routes = [
   {
@@ -59,4 +60,9 @@ export const routes = [
     page: Fail,
     isShowHeader: true,
   },
+  {
+  path: "/my-orders",
+  page: MyOrder,
+  isShowHeader: true,
+},
 ];
