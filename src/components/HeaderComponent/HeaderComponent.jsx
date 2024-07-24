@@ -1,4 +1,4 @@
-import { Badge, Col } from 'antd';
+import { Badge, Col, Dropdown, Menu } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from "react-redux";
 import { WrapperHeader, WrapperHeaderAccount, WrapperHeaderTextSpan, WrapperTextHeader } from './style';
@@ -8,24 +8,24 @@ import {
   ShoppingCartOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from 'jwt-decode'; // Correct import
 import { Link } from "react-router-dom";
 import "./style.css"
+
 function HeaderComponent() {
   const { cartList } = useSelector((state) => state.cart);
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState(null);
-  console.log(userInfo)
+
   useEffect(() => {
-    // boxchat();
     const userInfo = getTokenInfo();
     if (userInfo) {
-      setUserInfo(userInfo)
+      setUserInfo(userInfo);
     }
-
   }, []);
+
   const getTokenInfo = () => {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     if (token) {
       try {
         return jwtDecode(token);
@@ -33,23 +33,28 @@ function HeaderComponent() {
         console.log(error);
       }
     }
-  }
-  // const boxchat = () =>{
-  //   const script = document.createElement('script');
-  //   script.type = 'text/javascript';
-  //   script.id = 'hs-script-loader';
-  //   script.async = true;
-  //   script.defer = true;
-  //   script.src = '//js-na1.hs-scripts.com/46526002.js';
-  //   document.head.appendChild(script);
+  };
 
-  //   return () => {
-  //     document.head.removeChild(script);
-  //   };
-  // }
   const handleNavigateLogin = () => {
     navigate('/signin');
-  }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setUserInfo(null);
+    navigate('/');
+  };
+
+  const menu = (
+    <Menu>
+      <Menu.Item key="1">
+        <Link to="/myorders">My Orders</Link>
+      </Menu.Item>
+      <Menu.Item key="2" onClick={handleLogout}>
+        Logout
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <div>
@@ -63,12 +68,14 @@ function HeaderComponent() {
           <Search placeholder="Tìm kiếm " />
         </Col>
         <Col span={6} style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-          <WrapperHeaderAccount>
-            <UserOutlined style={{ fontSize: '30px' }} />
-            <div onClick={handleNavigateLogin} style={{ cursor: 'pointer' }}>
-              { userInfo ? (<WrapperHeaderTextSpan>{userInfo.email}</WrapperHeaderTextSpan>) : (<WrapperHeaderTextSpan>Đăng nhập</WrapperHeaderTextSpan>)}
-            </div>
-          </WrapperHeaderAccount>
+          <Dropdown overlay={menu} trigger={['click']}>
+            <WrapperHeaderAccount>
+              <UserOutlined style={{ fontSize: '30px', cursor: 'pointer' }} />
+              <div onClick={handleNavigateLogin} style={{ cursor: 'pointer' }}>
+                {userInfo ? (<WrapperHeaderTextSpan>{userInfo.email}</WrapperHeaderTextSpan>) : (<WrapperHeaderTextSpan>Đăng nhập</WrapperHeaderTextSpan>)}
+              </div>
+            </WrapperHeaderAccount>
+          </Dropdown>
           <div>
             <Link to="/cart">
               <Badge count={cartList.length} size='small'>
