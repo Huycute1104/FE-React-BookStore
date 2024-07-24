@@ -9,12 +9,14 @@ import { AiOutlineHeart } from "react-icons/ai";
 import "./product-card.css";
 
 const formatPrice = (price) => {
+  if (price === undefined || price === null) {
+    return "N/A"; // Or you can return a default value or empty string
+  }
   return price.toLocaleString("vi-VN", {
     style: "currency",
     currency: "VND",
   });
 };
-
 const ProductCard = ({ title, productItem }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -28,6 +30,9 @@ const ProductCard = ({ title, productItem }) => {
     toast.success("Sản phẩm đã được thêm vào giỏ hàng!");
   };
 
+  // Check if productItem.images is defined and has at least one image
+  const imageUrl = productItem?.images?.[0]?.url || "path/to/default-image.jpg";
+
   return (
     <Col md={2} sm={5} xs={10} className="product mtop">
       {title === "Giảm giá lớn" && (
@@ -36,21 +41,21 @@ const ProductCard = ({ title, productItem }) => {
       <img
         loading="lazy"
         onClick={handleClick}
-        src={productItem.imgUrl}
-        alt=""
+        src={imageUrl}
+        alt={productItem?.name || "Product Image"}
       />
       <div className="product-like">
         <AiOutlineHeart size={24} />
       </div>
       <div className="product-details">
-        <h3 onClick={handleClick}>{productItem.productName}</h3>
+        <h3 onClick={handleClick}>{productItem.name}</h3>
         <div className="rate">
           {[...Array(5)].map((_, index) => (
             <i key={index} className="fa fa-star"></i>
           ))}
         </div>
         <div className="price">
-          <h4>{formatPrice(productItem.price)}</h4>
+          <h4>{formatPrice(productItem.unitPrice)}</h4>
           <button
             aria-label="Add"
             type="submit"

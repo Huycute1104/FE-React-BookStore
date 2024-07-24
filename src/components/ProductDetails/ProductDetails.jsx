@@ -7,6 +7,9 @@ import "./product-details.css";
 
 
 const formatPrice = (price) => {
+  if (price === undefined || price === null) {
+    return "N/A"; // Or you can return a default value or empty string
+  }
   return price.toLocaleString("vi-VN", {
     style: "currency",
     currency: "VND",
@@ -44,31 +47,29 @@ const ProductDetails = ({ selectedProduct }) => {
         <Row className="justify-content-center">
           <Col md={6}>
             <div className="main-image">
-              <img loading="lazy" src={selectedProduct?.imgUrl} alt={selectedProduct?.productName} />
+              <img loading="lazy" src={selectedProduct?.images[0].url} alt={selectedProduct?.name} />
             </div>
             <div className="thumbnail-images">
-              {selectedProduct?.additionalImages?.map((imgUrl, index) => (
-                <img key={index} src={imgUrl} alt={`Thumbnail ${index + 1}`} />
+              {selectedProduct?.images?.map((imgUrl, index) => (
+                <img key={index} src={imgUrl.url} alt={`Thumbnail ${index + 1}`} />
               ))}
             </div>
           </Col>
           <Col md={6}>
-            <h2>{selectedProduct?.productName}</h2>
+            <h2>{selectedProduct?.name}</h2>
             <div className="rate">
               <div className="stars">
-                <i className="fa fa-star"></i>
-                <i className="fa fa-star"></i>
-                <i className="fa fa-star"></i>
-                <i className="fa fa-star"></i>
-                <i className="fa fa-star"></i>
+                {[...Array(5)].map((_, index) => (
+                  <i key={index} className="fa fa-star"></i>
+                ))}
               </div>
-              <span>{selectedProduct?.avgRating} <i className="fa fa-star"></i>  đánh giá</span>
+              <span>{5} <i className="fa fa-star"></i>  đánh giá</span>
             </div>
             <div className="info">
-              <span className="price">{formatPrice(selectedProduct?.price)}</span>
-              <span>Loại sản phẩm: {selectedProduct?.category}</span>
+              <span className="price">{formatPrice(selectedProduct?.unitPrice)}</span>
+              <span>Loại sản phẩm: {selectedProduct?.category?.categoryName || 'N/A'}</span>
             </div>
-            <p>{selectedProduct?.shortDesc}</p>
+            <p>{selectedProduct?.description}</p>
             <input
               className="qty-input"
               type="number"

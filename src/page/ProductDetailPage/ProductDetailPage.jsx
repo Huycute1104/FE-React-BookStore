@@ -1,37 +1,48 @@
 import { Fragment, useEffect, useState } from "react";
-import { products } from "../../utils/products";
 import { useParams } from "react-router-dom";
 import ProductDetails from "../../components/ProductDetails/ProductDetails";
 import useWindowScrollToTop from "../../hook/useWindowScrollToTop";
+import axios from 'axios';
 
 const Product = () => {
   const { id } = useParams();
-  const [selectedProduct, setSelectedProduct] = useState(
-    products.filter((item) => parseInt(item.id) === parseInt(id))[0]
-  );
+  console.log(id);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
-    window.scrollTo(0, 0);
-    setSelectedProduct(
-      products.filter((item) => parseInt(item.id) === parseInt(id))[0]
-    );
-    setRelatedProducts(
-      products.filter(
-        (item) =>
-          item.category === selectedProduct?.category &&
-          item.id !== selectedProduct?.id
-      )
-    );
-  }, [selectedProduct, id]);
+    const fetchProductData = async () => {
+      try {
+        // Fetch selected product
+        const productResponse = await axios.get(`https://localhost:7050/api/books/${id}`);
+        const productData = productResponse.data;
+        setSelectedProduct(productData);
+        console.log(selectedProduct);
+        
+
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching product data:', error);
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchProductData();
+  }, []);
 
   useWindowScrollToTop();
 
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+
   return (
     <Fragment>
-      <ProductDetails selectedProduct={selectedProduct} />
-      <section className="related-products">
-
-      </section>
+      {selectedProduct && <ProductDetails selectedProduct={selectedProduct} />}
+   
     </Fragment>
   );
 };

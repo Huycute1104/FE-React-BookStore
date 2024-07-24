@@ -6,6 +6,8 @@ import ProductsPage from "../page/ProductsPage/ProductsPage";
 import SignInPage from "../page/SignInPage/SignInPage";
 import SignUpPage from "../page/SignUpPage/SignUpPage";
 import CartPage from "../page/CartPage/Cart.jsx";
+import Success from "../page/CheckOut/Success.jsx";
+import Fail from "../page/CheckOut/Fail.jsx";
 
 export const routes = [
   {
@@ -46,5 +48,15 @@ export const routes = [
   {
     path: "*",
     page: NotFoundPage,
+  },
+  {
+    path: "/success",
+    page: Success,
+    isShowHeader: true,
+  },
+  {
+    path: "/fail",
+    page: Fail,
+    isShowHeader: true,
   },
 ];

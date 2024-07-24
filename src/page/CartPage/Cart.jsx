@@ -10,7 +10,11 @@ import {
 } from "../../redux/slice/cartSlice";
 import "./Cart.css";
 
+// Correct formatPrice function
 const formatPrice = (price) => {
+  if (price === undefined || price === null) {
+    return "N/A"; // Or you can return a default value or empty string
+  }
   return price.toLocaleString("vi-VN", {
     style: "currency",
     currency: "VND",
@@ -21,7 +25,7 @@ const Cart = () => {
   const { cartList } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const totalPrice = cartList.reduce(
-    (price, item) => price + item.qty * item.price,
+    (price, item) => price + item.qty * item.unitPrice,
     0
   );
 
@@ -43,19 +47,19 @@ const Cart = () => {
               </div>
             )}
             {cartList.map((item) => {
-              const productQty = item.price * item.qty;
+              const productQty = item.unitPrice * item.qty;
               return (
                 <div className="cart-list" key={item.id}>
                   <Row>
                     <Col className="image-holder" sm={4} md={3}>
-                      <img src={item.imgUrl} alt={item.productName} />
+                      <img src={item.images[0].url} alt={item.name} />
                     </Col>
                     <Col sm={8} md={9}>
                       <Row className="cart-content justify-content-center">
                         <Col xs={12} sm={9} className="cart-details">
-                          <h3>{item.productName}</h3>
+                          <h3>{item.name}</h3>
                           <h4>
-                            {formatPrice(item.price)} * {item.qty}
+                            {formatPrice(item.unitPrice)} * {item.qty}
                             <span>{formatPrice(productQty)}</span>
                           </h4>
                         </Col>

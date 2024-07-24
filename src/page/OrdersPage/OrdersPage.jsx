@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import axios from 'axios'; // Import axios
 import "./Checkout.css";
 
 const formatPrice = (price) => {
@@ -15,8 +16,9 @@ const formatPrice = (price) => {
 
 const Checkout = () => {
   const { cartList } = useSelector((state) => state.cart);
+
   const totalPrice = cartList.reduce(
-    (price, item) => price + item.qty * item.price,
+    (price, item) => price + item.qty * item.unitPrice,
     0
   );
 
@@ -38,8 +40,39 @@ const Checkout = () => {
         .matches(/^[0-9]+$/, "Số điện thoại không hợp lệ")
         .min(10, "Số điện thoại phải có ít nhất 10 chữ số"),
     }),
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      const orderData = {
+        orderDate: new Date().toISOString(),
+        total: totalPrice,
+        customerName: values.name,
+        customerPhone: values.phone,
+        orderDetailDtos: cartList.map(item => ({
+          bookId: item.id,
+          unitPrice: item.unitPrice,
+          quantity: item.qty,
+          discount: 0, // You can add discount logic if needed
+        })),
+      };
+      console.log("Submitting order:", orderData);
+      
+      const token = localStorage.getItem('token');
+      console.log("Token:", token);
+      
+      try {
+        const response = await axios.post('https://localhost:7050/api/orders', orderData, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        const url = response.data; // Assuming response.data contains the URL
+        console.log("Response URL:", url);
+
+        // Open the URL in a new tab
+        window.open(url, '_blank');
+      } catch (error) {
+        console.error("Error placing the order:", error.response ? error.response.data : error.message);
+        // Handle error response
+      }
     },
   });
 
