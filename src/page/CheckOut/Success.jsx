@@ -25,7 +25,7 @@ const Success = () => {
           Thank you for your purchase. Your transaction has been completed successfully.
         </Typography>
         <Button variant="contained" color="primary" size="large">
-          Go to Dashboard
+          Go to Home
         </Button>
       </Box>
     </Container>
