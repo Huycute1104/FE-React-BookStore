@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import instance from '../../api/axiosCustomize';
 import SliderComponent from '../../components/SliderComponent/SliderComponent';
 import Section from "../../components/Section/Section";
 import banner1 from '../../assets/images/banner1.jpg';
@@ -21,7 +21,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get('https://localhost:7050/api/books', {
+        const response = await instance.get('books', {
           params: {
             pageIndex: pageIndex,
             pageSize: pageSize,

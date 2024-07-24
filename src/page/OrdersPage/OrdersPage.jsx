@@ -1,11 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row, Form, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import axios from 'axios'; // Import axios
+import instance from '../../api/axiosCustomize'; // Import instance
 import "./Checkout.css";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const formatPrice = (price) => {
   return price.toLocaleString("vi-VN", {
@@ -16,6 +18,7 @@ const formatPrice = (price) => {
 
 const Checkout = () => {
   const { cartList } = useSelector((state) => state.cart);
+  const [token, setToken] = useState(localStorage.getItem('token') || '');
 
   const totalPrice = cartList.reduce(
     (price, item) => price + item.qty * item.unitPrice,
@@ -55,11 +58,8 @@ const Checkout = () => {
       };
       console.log("Submitting order:", orderData);
       
-      const token = localStorage.getItem('token');
-      console.log("Token:", token);
-      
       try {
-        const response = await axios.post('https://localhost:7050/api/orders', orderData, {
+        const response = await instance.post('/orders', orderData, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -72,9 +72,16 @@ const Checkout = () => {
       } catch (error) {
         console.error("Error placing the order:", error.response ? error.response.data : error.message);
         // Handle error response
+        toast.error("Error placing the order. Please try again.");
       }
     },
   });
+
+  const handleTokenChange = (event) => {
+    const newToken = event.target.value;
+    setToken(newToken);
+    localStorage.setItem('token', newToken);
+  };
 
   return (
     <section className="checkout">
@@ -146,6 +153,7 @@ const Checkout = () => {
           </Col>
         </Row>
       </Container>
+      <ToastContainer />
     </section>
   );
 };

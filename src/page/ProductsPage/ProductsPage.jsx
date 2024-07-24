@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import instance from '../../api/axiosCustomize';
 import TypeBookComponent from '../../components/TypeBookComponent/TypeBookComponent';
 import { WapperButtonMore, WapperProducts, WapperTypeProduct } from './style';
 import useWindowScrollToTop from "../../hook/useWindowScrollToTop";
@@ -13,7 +13,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await axios.get('https://localhost:7050/api/books', {
+        const response = await instance.get('books', { 
           params: {
             pageIndex: null,
             pageSize: null,

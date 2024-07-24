@@ -2,13 +2,11 @@ import { Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProductDetails from "../../components/ProductDetails/ProductDetails";
 import useWindowScrollToTop from "../../hook/useWindowScrollToTop";
-import axios from 'axios';
+import instance from '../../api/axiosCustomize';
 
 const Product = () => {
   const { id } = useParams();
-  console.log(id);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [relatedProducts, setRelatedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -16,11 +14,9 @@ const Product = () => {
     const fetchProductData = async () => {
       try {
         // Fetch selected product
-        const productResponse = await axios.get(`https://localhost:7050/api/books/${id}`);
+        const productResponse = await instance.get(`books/${id}`);
         const productData = productResponse.data;
         setSelectedProduct(productData);
-        console.log(selectedProduct);
-        
 
         setLoading(false);
       } catch (error) {
@@ -31,18 +27,16 @@ const Product = () => {
     };
 
     fetchProductData();
-  }, []);
+  }, [id]); // Thêm id vào dependency array
 
   useWindowScrollToTop();
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-
   return (
     <Fragment>
       {selectedProduct && <ProductDetails selectedProduct={selectedProduct} />}
-   
     </Fragment>
   );
 };

@@ -14,11 +14,10 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
-  Button,
   Typography,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import instance from '../../api/axiosCustomize'; // Import instance thay vì axios
 import InfoIcon from '@mui/icons-material/Info';
 import { toast, ToastContainer } from 'react-toastify';
 import OrderDetailDialog from './OrderDetailDialog';
@@ -41,8 +40,7 @@ const MyOrder = () => {
 
   const fetchOrders = async () => {
     try {
-      const apiUrl = 'https://localhost:7050/api/orders/customer';
-      const response = await axios.get(apiUrl, {
+      const response = await instance.get('orders/customer', {
         params: {
           pageIndex: pagination.currentPage,
           pageSize: pagination.pageSize,
